@@ -40,6 +40,7 @@ It helps you visualize assets, run strategies, and switch between custom color t
 ## Additional Information
 
 Created By: Dao Bui
+
 Reflection: I created this to learn how to create a full stack application. I also wanted to learn financial concepts through the lens of a software engineer. Along the way, I learned a ton about CSS and TailwindCSS, how to structure and connect a FastAPI backend with a modern frontend, and how to use AI tools effectively to refine, debug, and enhance my application. This project was as much about learning engineering best practices as it was about exploring finance through software. I'm excited to continue building projects that I am passionate about and enhance my technical ability.
 
 ## ⚙️ Installation
