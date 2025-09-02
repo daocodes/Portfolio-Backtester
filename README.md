@@ -1,7 +1,7 @@
-# 📊 StockVision
+# 📊 Backtester 1.0
 
-StockVision is a **finance and portfolio tracking web app** built with **FastAPI (Python)** and **Chart.js + TailwindCSS (frontend)**.  
-It helps you visualize assets, run strategies, and switch between custom color themes.
+Backtester 1.0 is a **finance and portfolio tracking web app** built with **FastAPI (Python)** and **Chart.js + TailwindCSS (frontend)**.  
+It helps you visualize assets and run strategies
 
 ---
 
