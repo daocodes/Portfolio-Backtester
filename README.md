@@ -41,6 +41,11 @@ It helps you visualize assets, run strategies, and switch between custom color t
 
 ---
 
+## Additional Information
+
+Created By: Dao Bui
+Reflection: I created this to learn
+
 ## ⚙️ Installation
 
 Clone the repo:
@@ -66,4 +71,3 @@ uvicorn main1:app --reload
 Then open your browser:
 http://127.0.0.1:8000
 
-By Dao Bui
