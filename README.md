@@ -47,3 +47,23 @@ Clone the repo:
 ```bash
 git clone https://github.com/YOUR_USERNAME/StockVision.git
 cd StockVision
+
+# create a virtual environment (recommended)
+python3 -m venv venv
+source venv/bin/activate   # macOS/Linux
+venv\Scripts\activate      # Windows
+
+# install dependencies
+pip install -r requirements.txt
+npm install
+
+# build Tailwind
+npx tailwindcss -i ./src/input.css -o ./src/output.css --watch
+
+#Start FastAPI server:
+uvicorn main1:app --reload
+
+Then open your browser:
+http://127.0.0.1:8000
+
+By Dao Bui
