@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio Graph</title>
+  <link href="/static/output.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#0f0c29] text-white font-sans min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <nav class="w-full bg-[#111] px-10 py-4 flex justify-between items-center shadow-md border-b border-purple-900/40 sticky top-0 z-50">
+    <h1 class="font-extrabold text-2xl tracking-wide text-white">Backtester 1.0</h1>
+    <button id="toggleSidebar" class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded-full shadow-lg shadow-purple-500/40 transition">
+      + Controls
+    </button>
+  </nav>
+
+  <!-- Graph Section -->
+  <main class="flex-1 py-12 px-6 relative">
+    <div class="max-w-6xl mx-auto bg-[#111] p-10 rounded-3xl shadow-2xl border border-purple-900/40">
+      <h2 class="text-3xl font-bold mb-8 text-purple-400">Portfolio Performance</h2>
+      <canvas id="portfolioChart" class="w-full h-[500px]"></canvas>
+
+      <!-- Stats Panel -->
+      <div id="statsPanel" class="mt-6 bg-[#111] p-6 rounded-2xl shadow-lg border border-purple-900/40">
+        <h3 class="text-xl font-bold mb-4 text-purple-400">Portfolio Stats</h3>
+        <div class="grid grid-cols-2 gap-4 text-gray-300 text-sm">
+          <div>Cumulative Return: <span id="stat-cumulative">--</span></div>
+          <div>CAGR: <span id="stat-cagr">--</span></div>
+          <div>Volatility: <span id="stat-volatility">--</span></div>
+          <div>Sharpe Ratio: <span id="stat-sharpe">--</span></div>
+          <div>Max Drawdown: <span id="stat-drawdown">--</span></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Sidebar -->
+  <div id="sidebar" 
+       class="fixed top-0 right-0 w-96 h-full bg-[#111] text-white transform translate-x-full transition-transform duration-300 ease-in-out shadow-lg z-50 overflow-y-auto scroll-smooth">
+    <div class="p-6 flex justify-between items-center border-b border-purple-900/40 sticky top-0 bg-[#111] z-50">
+      <h2 class="text-xl font-bold">Controls</h2>
+      <button id="closeSidebar" class="text-gray-400 hover:text-white text-2xl font-bold">&times;</button>
+    </div>
+
+    <div class="p-6 space-y-6">
+
+      <!-- Search -->
+      <div id="searchSection" class="relative">
+        <input id="searchInput" type="text" placeholder="Search stocks, ETFs, crypto..."
+               class="w-full p-2 rounded bg-[#222] text-white"/>
+        <div id="searchResults" class="absolute w-full bg-[#1a1a1a] border border-purple-700 rounded-lg mt-1 hidden z-50"></div>
+      </div>
+
+      <!-- Time Window -->
+      <div id="timeWindowSection" class="relative">
+        <label class="block text-sm font-medium text-gray-300 mb-2">Time Window</label>
+        <button id="timeWindowBtn" 
+                class="w-full flex justify-between items-center bg-[#1a1a1a] border border-purple-700 text-white px-4 py-2 rounded-lg">
+          <span id="timeWindowLabel">3 Months</span>
+          <span class="text-purple-400">▼</span>
+        </button>
+        <div id="timeWindowMenu" 
+             class="absolute w-full mt-1 bg-[#1a1a1a] border border-purple-700 rounded-lg shadow-lg hidden z-50">
+          <div data-value="1mo" class="px-4 py-2 hover:bg-purple-600 cursor-pointer">1 Month</div>
+          <div data-value="3mo" class="px-4 py-2 hover:bg-purple-600 cursor-pointer">3 Months</div>
+          <div data-value="6mo" class="px-4 py-2 hover:bg-purple-600 cursor-pointer">6 Months</div>
+          <div data-value="1y" class="px-4 py-2 hover:bg-purple-600 cursor-pointer">1 Year</div>
+          <div data-value="5y" class="px-4 py-2 hover:bg-purple-600 cursor-pointer">5 Years</div>
+        </div>
+      </div>
+
+      <!-- Strategy Templates -->
+      <div id="strategySection">
+        <h3 class="text-lg font-bold mb-2">📚 Strategy Templates</h3>
+        <select id="strategySelect" class="w-full p-2 rounded bg-[#1a1a1a] border border-purple-700 text-white">
+          <option value="">-- Choose a Strategy --</option>
+          <option value="6040">60/40 Portfolio</option>
+          <option value="permanent">Permanent Portfolio</option>
+          <option value="equal">Equal Weight (FAANG)</option>
+          <option value="barbell">Barbell Strategy</option>
+          <option value="dividend">Dividend Growth</option>
+        </select>
+      </div>
+
+      <!-- Moving Average Mode -->
+      <div id="maSection">
+        <h3 class="text-lg font-bold mb-2">📈 Moving Average Mode</h3>
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-sm text-gray-300">Enable MA Mode</span>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="maMode" class="sr-only peer">
+            <div class="w-11 h-6 bg-gray-700 rounded-full peer peer-checked:bg-purple-600 transition"></div>
+            <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full peer-checked:translate-x-5 transition"></div>
+          </label>
+        </div>
+        <div class="flex items-center space-x-2">
+          <label for="maPeriod" class="text-sm text-gray-300">Period:</label>
+          <input id="maPeriod" type="number" value="50" 
+                 class="flex-1 p-2 rounded bg-[#222] text-white disabled:opacity-40" 
+                 disabled />
+        </div>
+      </div>
+
+      <!-- Portfolio Builder -->
+      <div id="portfolioSection">
+        <h3 class="text-lg font-bold mb-2">Portfolio</h3>
+        <div id="portfolioInputs" class="space-y-2"></div>
+        <button id="addPortfolioRow" class="w-full py-2 mt-2 bg-[#222] hover:bg-purple-600 rounded">
+          + Add Asset
+        </button>
+        <button id="updatePortfolioBtn" class="w-full py-2 mt-2 bg-purple-600 hover:bg-purple-700 rounded">
+          Update Portfolio
+        </button>
+      </div>
+
+      <!-- Portfolio Line Color -->
+      <div id="colorSection">
+        <label class="block text-sm font-medium text-gray-300 mb-2">Portfolio Line Color</label>
+        <input id="portfolioColor" type="color" value="#34D399" class="w-12 h-12 p-1 rounded cursor-pointer" />
+      </div>
+
+      <!-- Threshold -->
+      <div id="thresholdSection">
+        <label class="block text-sm font-medium text-gray-300 mb-2">Threshold (default 1.0)</label>
+        <input id="thresholdInput" type="number" value="1.0"
+               class="w-full p-2 rounded bg-[#222] text-white mb-2" />
+      </div>
+    </div>
+  </div>
+  <footer class="w-full flex justify-between items-center px-6 py-4 border-t border-purple-900/40 text-xs text-gray-500 bg-[#111]">
+  <!-- Left side credit -->
+  <span>Built by<span class="text-purple-400"> Dao Bui</span></span>
+
+  <!-- Right side LinkedIn -->
+  <a href="https://www.linkedin.com/in/dao-bui-bb53692b4/" target="_blank" class="flex items-center space-x-2 hover:text-purple-400 transition">
+    <!-- LinkedIn SVG -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" 
+         class="w-4 h-4 fill-current text-purple-400">
+      <path d="M100.28 448H7.4V148.9h92.88zm-46.44-341a53.66 
+               53.66 0 1153.66-53.66 53.66 53.66 0 01-53.66 
+               53.66zM447.9 448h-92.68V304.1c0-34.3-12.3-57.7-43-57.7-23.4 
+               0-37.3 15.7-43.4 30.8-2.2 5.3-2.8 12.7-2.8 
+               20.1V448h-92.7s1.2-269.7 0-297.1h92.7v42.1c12.3-19 
+               34.4-46 83.7-46 61.2 0 107.2 39.8 107.2 
+               125.3z"/>
+    </svg>
+    <span class="text-sm">@Dao Bui</span>
+  </a>
+</footer>
+
+  <!-- Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      let portfolioChart;
+      let thresholdValue = 1.0;
+      let timeWindowValue = "3mo"; 
+
+      const portfolioInputs = document.getElementById("portfolioInputs");
+      const maModeToggle = document.getElementById("maMode");
+      const maPeriodInput = document.getElementById("maPeriod");
+
+      // Enable/disable MA period input
+      maModeToggle.addEventListener("change", () => {
+        maPeriodInput.disabled = !maModeToggle.checked;
+        buildChart();
+      });
+      maPeriodInput.addEventListener("input", buildChart);
+
+      // --- Strategy Templates ---
+      const strategySelect = document.getElementById("strategySelect");
+      strategySelect.addEventListener("change", () => {
+        const choice = strategySelect.value;
+        portfolioInputs.innerHTML = ""; // clear
+
+        if (choice === "6040") {
+          addPortfolioRow("SPY", 60, "#6366F1");
+          addPortfolioRow("BND", 40, "#10B981");
+        }
+        else if (choice === "permanent") {
+          addPortfolioRow("SPY", 25, "#6366F1");
+          addPortfolioRow("TLT", 25, "#10B981");
+          addPortfolioRow("GLD", 25, "#FACC15");
+          addPortfolioRow("BIL", 25, "#F87171");
+        }
+        else if (choice === "equal") {
+          addPortfolioRow("AAPL", 20, "#F87171");
+          addPortfolioRow("AMZN", 20, "#10B981");
+          addPortfolioRow("GOOGL", 20, "#3B82F6");
+          addPortfolioRow("META", 20, "#FACC15");
+          addPortfolioRow("NFLX", 20, "#6366F1");
+        }
+        else if (choice === "barbell") {
+          addPortfolioRow("BIL", 80, "#10B981");
+          addPortfolioRow("ARKK", 20, "#F87171");
+        }
+        else if (choice === "dividend") {
+          addPortfolioRow("JNJ", 25, "#10B981");
+          addPortfolioRow("PG", 25, "#FACC15");
+          addPortfolioRow("KO", 25, "#F87171");
+          addPortfolioRow("T", 25, "#3B82F6");
+        }
+
+        buildChart();
+      });
+
+      function calculateSMA(data, windowSize) {
+        let sma = [];
+        for (let i = 0; i < data.length; i++) {
+          if (i < windowSize) sma.push(null);
+          else {
+            const slice = data.slice(i - windowSize, i);
+            sma.push(slice.reduce((a, b) => a + b, 0) / windowSize);
+          }
+        }
+        return sma;
+      }
+
+      // Sidebar toggle
+      const sidebar = document.getElementById("sidebar");
+      document.getElementById("toggleSidebar").addEventListener("click", () => sidebar.classList.remove("translate-x-full"));
+      document.getElementById("closeSidebar").addEventListener("click", () => sidebar.classList.add("translate-x-full"));
+
+      // Time Window
+      const timeWindowBtn = document.getElementById("timeWindowBtn");
+      const timeWindowMenu = document.getElementById("timeWindowMenu");
+      const timeWindowLabel = document.getElementById("timeWindowLabel");
+      timeWindowBtn.addEventListener("click", () => timeWindowMenu.classList.toggle("hidden"));
+      timeWindowMenu.querySelectorAll("div").forEach(item => {
+        item.addEventListener("click", (e) => {
+          timeWindowValue = e.target.getAttribute("data-value");
+          timeWindowLabel.textContent = e.target.textContent;
+          timeWindowMenu.classList.add("hidden");
+          buildChart();
+        });
+      });
+
+      // Portfolio row builder
+      function addPortfolioRow(symbol = "", weight = "", color = "#A855F7") {
+        const div = document.createElement("div");
+        div.classList.add("flex", "items-center", "space-x-2");
+        div.innerHTML = `
+          <input type="text" value="${symbol}" placeholder="Symbol" class="flex-1 p-2 rounded bg-[#222] text-white"/>
+          <input type="number" value="${weight}" placeholder="Weight" class="w-20 p-2 rounded bg-[#222] text-white"/>
+          <input type="color" value="${color}" class="w-10 h-10 p-1 rounded cursor-pointer"/>
+          <button class="remove-row text-red-400 px-2">✕</button>
+        `;
+        portfolioInputs.appendChild(div);
+        div.querySelector(".remove-row").addEventListener("click", () => div.remove());
+      }
+
+      addPortfolioRow("SPY", 50, "#6366F1");
+      addPortfolioRow("AAPL", 50, "#A855F7");
+
+      document.getElementById("addPortfolioRow").addEventListener("click", () => addPortfolioRow());
+      document.getElementById("updatePortfolioBtn").addEventListener("click", buildChart);
+
+      // --- Search ---
+      const searchInput = document.getElementById("searchInput");
+      const searchResults = document.getElementById("searchResults");
+      searchInput.addEventListener("input", async () => {
+        const query = searchInput.value.trim();
+        if (query.length < 2) {
+          searchResults.classList.add("hidden");
+          return;
+        }
+
+        try {
+          const res = await fetch(`/api/search/${query}`);
+          if (!res.ok) throw new Error("API error " + res.status);
+          const data = await res.json();
+
+          if (!Array.isArray(data) || data.length === 0) {
+            searchResults.innerHTML = "<div class='px-4 py-2 text-gray-400'>No results found</div>";
+          } else {
+            searchResults.innerHTML = data.map(x => `
+              <div class="px-4 py-2 hover:bg-purple-600 cursor-pointer" data-symbol="${x.symbol}">
+                <div class="font-bold">${x.symbol}</div>
+                <div class="text-sm text-gray-300">${x.name || ""}</div>
+                <div class="text-xs text-gray-400">${x.type || ""} • ${x.exchange || ""}</div>
+              </div>
+            `).join("");
+          }
+
+          searchResults.classList.remove("hidden");
+
+          searchResults.querySelectorAll("div[data-symbol]").forEach(item => {
+            item.addEventListener("click", () => {
+              addPortfolioRow(item.dataset.symbol, 50, "#A855F7");
+              searchResults.classList.add("hidden");
+              searchInput.value = "";
+            });
+          });
+        } catch (err) {
+          console.error("❌ Search failed", err);
+          searchResults.innerHTML = "<div class='px-4 py-2 text-red-400'>Search error</div>";
+          searchResults.classList.remove("hidden");
+        }
+      });
+
+      // --- Build Chart ---
+      async function buildChart() {
+        const inputVal = parseFloat(document.getElementById("thresholdInput").value);
+        if (!isNaN(inputVal)) thresholdValue = inputVal;
+
+        const rows = portfolioInputs.querySelectorAll("div");
+        const weights = {};
+        const stockColors = {};
+        rows.forEach(row => {
+          const symbol = row.querySelector("input[type=text]").value.trim();
+          const weight = parseFloat(row.querySelector("input[type=number]").value);
+          const color = row.querySelector("input[type=color]").value;
+          if (symbol && !isNaN(weight)) {
+            weights[symbol] = weight;
+            stockColors[symbol] = color;
+          }
+        });
+        if (Object.keys(weights).length === 0) return;
+
+        const res = await fetch("/api/portfolio-history", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ weights, period: timeWindowValue })
+        });
+        const data = await res.json();
+
+        const portfolioColor = document.getElementById("portfolioColor").value;
+        const maMode = maModeToggle.checked;
+        const maPeriod = parseInt(maPeriodInput.value) || 50;
+        const datasets = [];
+
+        if (maMode) {
+          datasets.push({
+            label: `My Portfolio ${maPeriod}d SMA`,
+            data: calculateSMA(data.portfolio, maPeriod),
+            borderColor: portfolioColor,
+            borderDash: [5, 5],
+            tension: 0.4,
+            fill: false
+          });
+          Object.keys(weights).forEach(symbol => {
+            datasets.push({
+              label: `${symbol} ${maPeriod}d SMA`,
+              data: calculateSMA(data[symbol], maPeriod),
+              borderColor: stockColors[symbol],
+              borderDash: [5, 5],
+              tension: 0.4,
+              fill: false
+            });
+          });
+        } else {
+          const portfolioAbove = data.portfolio.map(v => v >= thresholdValue ? v : null);
+          const portfolioBelow = data.portfolio.map(v => v < thresholdValue ? v : null);
+
+          datasets.push({
+            label: "My Portfolio",
+            data: data.portfolio,
+            borderColor: portfolioColor,
+            tension: 0.4,
+            fill: false
+          });
+          datasets.push({
+            label: "My Portfolio (Above)",
+            data: portfolioAbove,
+            borderColor: portfolioColor,
+            backgroundColor: "rgba(34,197,94,0.3)",
+            tension: 0.4,
+            fill: true
+          });
+          datasets.push({
+            label: "My Portfolio (Below)",
+            data: portfolioBelow,
+            borderColor: portfolioColor,
+            backgroundColor: "rgba(239,68,68,0.3)",
+            tension: 0.4,
+            fill: true
+          });
+
+          Object.keys(weights).forEach(symbol => {
+            datasets.push({
+              label: symbol,
+              data: data[symbol],
+              borderColor: stockColors[symbol],
+              tension: 0.4,
+              fill: false
+            });
+          });
+        }
+
+        if (data.stats) {
+          document.getElementById("stat-cumulative").textContent = data.stats.cumulative_return + "%";
+          document.getElementById("stat-cagr").textContent = data.stats.cagr + "%";
+          document.getElementById("stat-volatility").textContent = data.stats.volatility + "%";
+          document.getElementById("stat-sharpe").textContent = data.stats.sharpe;
+          document.getElementById("stat-drawdown").textContent = data.stats.max_drawdown + "%";
+        }
+
+        if (portfolioChart) portfolioChart.destroy();
+        const ctx = document.getElementById("portfolioChart").getContext("2d");
+        portfolioChart = new Chart(ctx, {
+          type: "line",
+          data: { labels: data.dates, datasets },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { labels: { color: "#ccc" } },
+              title: { display: true, text: "Portfolio vs Assets", color: "#fff", font: { size: 22 } }
+            },
+            scales: {
+              x: { ticks: { color: "#aaa" }, grid: { color: "#222" } },
+              y: { ticks: { color: "#aaa" }, grid: { color: "#222" } }
+            }
+          }
+        });
+      }
+
+      buildChart();
+    });
+  </script>
+</body>
+</html>

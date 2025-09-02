@@ -1,0 +1,25 @@
+# Python cache / compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+venv/
+.env/
+
+# Node modules
+node_modules/
+package-lock.json
+
+# Tailwind build artifacts (optional, since you can rebuild)
+*.log
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Editor-specific
+.vscode/
+.idea/

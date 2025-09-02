@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>StockVision - Financial Management</title>
+    <link href="/static/output.css" rel="stylesheet">
+    <script src="/static/api.js?v=1.0"></script>
+
+</head>
+<body class="bg-[#0A0908]">
+    <div class="w-full bg-white border-black border-2 font-big text-3xl flex flex-row items-center space-x-20">
+        <h1 class="font-bold ml-10 mr-10">StockVision</h1>
+        <h2 class="border border-black border-2 border-t-0 border-b-0 p-3">Home</h2>
+        <h2 class="border border-black border-2 border-t-0 border-b-0 p-3">Contact</h2>
+        <h2 class="border border-black border-2 border-t-0 border-b-0 p-3">Blog</h2>
+        <h2 class="border border-black border-2 border-t-0 border-b-0 p-3">Pricing</h2>
+        <h2 class="border border-black border-2 border-t-0 border-b-0 p-3">FAQ</h2>
+        <h2 class="border border-black border-2 border-t-0 border-b-0 p-3">Login</h2>
+    </div>
+        
+    <div class="bg-[url('./wall-street-background.jpg')] relative w-full h-[850px] border border-black border-2 mg-0 flex border-2 h-96 bg-cover bg-[center_80%] text-white font-big">
+
+        <h1 class="text-5xl absolute bottom-[120px] ml-20 mb-20">Take Control of Your Finances Today</h1>
+        <p class="absolute bottom-[130px] ml-20 mb-[20px]">Stay on top of your spending, track investments, and build a secure financial future-all with StockVision. Sign up now to get Started!</p>
+
+        <a href = "/static/graph.html">
+        <button class="ml-20 absolute bottom-[80px] border border-black bg-white text-black p-3">Get Started Now</button>
+        </a>
+        
+      </div>  
+
+
+      <div class="w-full flex justify-center">
+        <div class="border border-white max-w-[1550px] w-full px-[10vw] transition-all duration-500 ease-in-out">
+      
+          <!-- FUTURE OF FINANCE pill -->
+          <div class="w-full flex justify-center mt-20 mb-6">
+            <div class="w-[200px] h-[30px] bg-purple-300 rounded-2xl flex justify-center items-center">
+              <h1 class="font-small">FUTURE OF FINANCE</h1>
+            </div>
+          </div>
+      
+          <!-- Main Heading -->
+          <h1 class="text-center text-5xl font-small text-white leading-[60px]">
+            Our Diverse Suite of <br> Finance Solutions
+          </h1>
+      
+          
+      
+        </div>
+      </div>
+      
+      
+
+
+      <!-- <div class="grid grid-cols-2 gap-0 border-t-0 ml-[140px] mr-[140px] h-64">
+
+        <div class="border border-white border-r-0 border-t-0 flex items-center justify-center">01</div>
+
+    <div class="border border-white flex border-t-0 items-center justify-center">02</div>
+      </div> -->
+
+      <div class="w-full flex justify-center">
+        
+        <div class="flex max-w-[1550px] w-full transition-all duration-500 ease-in-out">
+          
+          
+          <div class="flex-1 flex items-center justify-start border border-white px-[10vw]">
+            <div id="stock-list" class="text-white">
+              <!-- Stock data will be loaded here via API -->
+              <h3 class="text-xl mb-4">Loading stocks...</h3>
+            </div>
+          </div>
+          <div class="flex-1 flex items-center justify-end border border-white px-[10vw]">
+            <div id="market-summary" class="text-white">
+              <!-- Market summary will be loaded here via API -->
+              <h3 class="text-xl mb-4">Loading market data...</h3>
+            </div>
+          </div>
+        
+        </div>
+      </div>
+
+
+      <div class="flex items-center justify-center px-16"> 
+        <div class="relative w-full ">
+            <div class="absolute bottom-[200px] left-[650px] w-[500px] h-[500px] bg-[#A855F7] rounded-full mix-blend-screen blur-3xl opacity-60 animate-blob animation-delay-2000 pointer-events-none"></div>
+<div class="absolute bottom-0 left-[450px] w-[500px] h-[500px] bg-[#FACC15] rounded-full mix-blend-screen blur-3xl opacity-60 animate-blob animation-delay-4000 pointer-events-none"></div>
+<div class="absolute bottom-0 left-[850px] w-[500px] h-[500px] bg-[#FB7185] rounded-full mix-blend-screen blur-3xl opacity-60 animate-blob pointer-events-none"></div>
+
+      <div class="w-full flex justify-center">
+        <div class="border border-white max-w-[1550px] w-full px-[10vw] transition-all duration-500 ease-in-out">
+          
+          <h2 class="text-center font-big text-white leading-[45px] mt-[250px]">WELCOME TO</h2>
+          
+          <h1 class="text-center text-5xl font-small text-white leading-[60px] mb-8">
+            The Turning Point of Thought.
+          </h1>
+      
+          <!-- Center the button here -->
+          <div class="flex justify-center">
+            <a href = "/static/graph.html">
+            <button class="border border-white bg-white text-black p-3 rounded-full font-big px-8">
+              Let's Begin
+            </button>
+            </a>
+          </div>
+
+          <div class="flex justify-center text-sm text-white mt-2 underline mb-[250px]">
+            <h1>Learn More About Us</h1>
+          </div>
+      
+        </div>
+      </div>
+    </div>
+    </div>
+
+
+      
+
+      
+    <!-- API Script -->
+    
+</body>
+</html>
