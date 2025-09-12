@@ -1,77 +1,53 @@
-<h1 align="center">📊 StockVision</h1>
-<p align="center">
-  A full-stack portfolio backtester built with <b>FastAPI</b>, <b>TailwindCSS</b>, and <b>Chart.js</b>.  
-</p>
+# 📊 StockVision
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Python-3.11-blue?logo=python">
-  <img src="https://img.shields.io/badge/FastAPI-0.116.1-teal?logo=fastapi">
-  <img src="https://img.shields.io/badge/TailwindCSS-4.0-blue?logo=tailwindcss">
-  <img src="https://img.shields.io/badge/Chart.js-5.0-purple?logo=chartdotjs">
-</p>
+StockVision is a **finance and portfolio tracking web app** built with **FastAPI (Python)** and **Chart.js + TailwindCSS (frontend)**.  
+It helps you visualize assets, run strategies, and switch between custom color themes.
 
 ---
 
-## ✨ Demo
+## ✨ Preview
 
-🎥 **App Walkthrough**  
-_Add a GIF here showing how the app works end-to-end_  
-
-<img src="assets/demo.gif" width="800"/>
+![Demo](assets/demo.gif)  
+*A quick walkthrough of StockVision in action.*
 
 ---
 
 ## 🚀 Features
+- 🔍 **Search bar** – quickly add stocks, ETFs, or crypto to your portfolio  
+- 📈 **Chart visualization** – powered by Chart.js  
+- ⚡ **Moving Average Mode** – overlay SMA curves with custom period  
+- 🧮 **Strategy Templates** – load prebuilt allocations like:
+  - 60/40 Portfolio  
+  - Permanent Portfolio  
+  - Equal Weight (FAANG)  
+  - Dividend Growth  
+  - Barbell Strategy  
+- 📊 **Stats Panel** – automatic calculation of:
+  - Cumulative Return  
+  - CAGR (Annualized Return)  
+  - Volatility  
+  - Sharpe Ratio  
+  - Max Drawdown  
 
-- 🔍 **Search bar** – Add stocks, ETFs, or crypto to your portfolio  
-  <img src="assets/search.png" width="600"/>
-
-- 📈 **Dynamic charts** – Interactive graphs powered by Chart.js  
-  <img src="assets/chart.png" width="600"/>
-
-- 🧮 **Strategy templates** – Prebuilt portfolios like 60/40, Permanent Portfolio, FAANG, Dividend Growth  
-  <img src="assets/templates.png" width="600"/>
-
-- 📊 **Stats panel** – Displays cumulative return, CAGR, Sharpe ratio, volatility, and drawdown  
-  <img src="assets/stats.png" width="600"/>
-
-- 🎨 **Theme modes** – Switch between Dark 🌑, Sunset 🌅, and Pastel 🌸  
-  <img src="assets/themes.png" width="600"/>
 
 ---
 
+## 🛠 Tech Stack
+**Backend**
+- FastAPI  
+- yfinance (stock/crypto data)  
+- pandas (data processing)  
 
-Finance-Project/
-│
-├── main1.py              # FastAPI backend
-├── algo.py               # extra backend logic
-├── requirements.txt      # Python dependencies
-├── package.json          # npm config (Tailwind)
-├── start.sh              # script to run app
-├── tailwind.config.js    # Tailwind config
-│
-├── src/                  # frontend
-│   ├── index.html        # landing page
-│   ├── graph.html        # main portfolio page
-│   ├── api.js            # JS for API calls
-│   ├── input.css         # Tailwind source
-│   ├── output.css        # built CSS
-│   └── wall-street-background.jpg
-│
-└── assets/               # screenshots & GIFs for README
-    ├── demo.gif
-    ├── chart.png
-    ├── sidebar.png
-    ├── stats.png
-    └── themes.png
+**Frontend**
+- HTML / TailwindCSS  
+- Chart.js (graphing library)  
+- Vanilla JS  
 
-Built by Dao Bui
+---
 
-<p> <a href="https://www.linkedin.com/in/dao-bui-bb53692b4/"> <img src="https://img.shields.io/badge/LinkedIn-Dao%20Bui-blue?logo=linkedin"> </a> </p>
 ## ⚙️ Installation
 
 Clone the repo:
-
 ```bash
 git clone https://github.com/YOUR_USERNAME/StockVision.git
 cd StockVision
@@ -81,10 +57,19 @@ source venv/bin/activate   # macOS/Linux
 venv\Scripts\activate      # Windows
 
 pip install -r requirements.txt
-uvicorn main1:app --reload
 
 npm install
 npx tailwindcss -i ./src/input.css -o ./src/output.css --watch
 
+uvicorn main1:app --reload
 
+```
+--- 
+## 💭 Reflection
+
+I created this project as a way to teach myself how to build a full-stack application from the ground up. At the same time, I wanted to deepen my understanding of financial concepts, but through the perspective of a software engineer — building tools rather than just reading about them.
+
+Through this project, I learned a lot of CSS and TailwindCSS, how to structure and connect a FastAPI backend with a modern frontend, and how to effectively leverage AI tools to refine, debug, and enhance my application.
+
+This project was as much about learning engineering best practices as it was about exploring finance through software.
 
