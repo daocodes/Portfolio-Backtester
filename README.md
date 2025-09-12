@@ -40,6 +40,34 @@ _Add a GIF here showing how the app works end-to-end_
 
 ---
 
+
+Finance-Project/
+│
+├── main1.py              # FastAPI backend
+├── algo.py               # extra backend logic
+├── requirements.txt      # Python dependencies
+├── package.json          # npm config (Tailwind)
+├── start.sh              # script to run app
+├── tailwind.config.js    # Tailwind config
+│
+├── src/                  # frontend
+│   ├── index.html        # landing page
+│   ├── graph.html        # main portfolio page
+│   ├── api.js            # JS for API calls
+│   ├── input.css         # Tailwind source
+│   ├── output.css        # built CSS
+│   └── wall-street-background.jpg
+│
+└── assets/               # screenshots & GIFs for README
+    ├── demo.gif
+    ├── chart.png
+    ├── sidebar.png
+    ├── stats.png
+    └── themes.png
+
+Built by Dao Bui
+
+<p> <a href="https://www.linkedin.com/in/dao-bui-bb53692b4/"> <img src="https://img.shields.io/badge/LinkedIn-Dao%20Bui-blue?logo=linkedin"> </a> </p>
 ## ⚙️ Installation
 
 Clone the repo:
@@ -47,3 +75,16 @@ Clone the repo:
 ```bash
 git clone https://github.com/YOUR_USERNAME/StockVision.git
 cd StockVision
+
+python3 -m venv venv
+source venv/bin/activate   # macOS/Linux
+venv\Scripts\activate      # Windows
+
+pip install -r requirements.txt
+uvicorn main1:app --reload
+
+npm install
+npx tailwindcss -i ./src/input.css -o ./src/output.css --watch
+
+
+
